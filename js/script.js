@@ -248,3 +248,99 @@ document.addEventListener("DOMContentLoaded", () => {
         modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModalFunc(); });
     }
 });
+// --- 5. МОДАЛЬНОЕ ОКНО СОТРУДНИКОВ (TEAM MODAL) ---
+
+    // База данных сотрудников (ЗАПОЛНИТЕ РЕАЛЬНЫМИ ДАННЫМИ)
+    const teamData = {
+        "1": { // Көкеев Әділ
+            name: "Көкеев Әділ",
+            role: "И.о директор филиала",
+            img: "assets/team/adil_kokeyev.png",
+            bio: `Дата рождения: 15 мая 1975 г.
+
+            Образование:
+            Высшее, Казахский Национальный Технический Университет, специальность "Горное дело".
+
+            Опыт работы:
+            Более 20 лет в системе промышленной безопасности. Начинал карьеру с должности спасателя, прошел путь до руководителя филиала.
+
+            Награды:
+            Награжден медалью "За доблестный труд".`,
+            phone: "77753951101",
+            email: "kokeev.am@centrspas.kz"
+        },
+        "2": { // Батырхан Асылхан
+            name: "Батырхан Асылхан",
+            role: "Начальник ОПО",
+            img: "assets/team/team-placeholder-2.png", // Проверьте путь к фото
+            bio: `Дата рождения: 10 августа 1982 г.
+
+            Образование:
+            Кызылординский государственный университет им. Коркыт Ата.
+
+            Опыт работы:
+            Отвечает за оперативно-профилактический отдел. Эксперт в области предупреждения аварийных ситуаций.`,
+            phone: "77082341499",
+            email: "batyrhan.ab@centrspas.kz"
+        },
+        "3": { // Рашитов Тоғанас
+            name: "Рашитов Тоғанас",
+            role: "Ведущий инженер по АСО",
+            img: "assets/team/toganas_rashitov.png",
+            bio: `Дата рождения: 22 марта 1980 г.
+
+            Образование:
+            Техническое высшее образование по специальности "Безопасность жизнедеятельности".
+
+            Опыт работы:
+            Специализируется на аварийно-спасательном оборудовании и подготовке личного состава.`,
+            phone: "77778788201",
+            email: "rashitov.ta@centrspas.kz"
+        }
+    };
+
+    const teamModal = document.getElementById('team-modal');
+    const teamModalClose = document.querySelector('.team-modal-close');
+    const teamCards = document.querySelectorAll('.js-team-details');
+
+    // Элементы внутри модалки
+    const tName = document.getElementById('team-modal-name');
+    const tRole = document.getElementById('team-modal-role');
+    const tImg = document.getElementById('team-modal-img');
+    const tBio = document.getElementById('team-modal-bio');
+    const tContacts = document.querySelector('.team-contacts-modal');
+
+    if (teamModal && teamCards.length > 0) {
+        teamCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.getAttribute('data-id');
+                const person = teamData[id];
+
+                if (person) {
+                    tName.textContent = person.name;
+                    tRole.textContent = person.role;
+                    tImg.src = person.img;
+                    tBio.textContent = person.bio;
+
+                    // Генерируем кнопки контактов
+                    tContacts.innerHTML = `
+                        <a href="https://wa.me/${person.phone}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:${person.email}"><i class="fas fa-envelope"></i></a>
+                    `;
+
+                    teamModal.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                }
+            });
+        });
+
+        const closeTeamModal = () => {
+            teamModal.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        };
+
+        if (teamModalClose) teamModalClose.addEventListener('click', closeTeamModal);
+        teamModal.addEventListener('click', (e) => {
+            if (e.target === teamModal) closeTeamModal();
+        });
+    }
