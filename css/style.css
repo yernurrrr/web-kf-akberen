@@ -674,3 +674,78 @@ main .section:first-child { padding-top: 2rem; }
     display: flex; justify-content: center; align-items: center; transition: 0.3s;
 }
 .team-contacts-modal a:hover { background: var(--color-primary); color: #000; border-color: var(--color-primary); }
+/* --- СТРАНИЦА ПАРТНЕРОВ (Белые плитки) --- */
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки на ПК */
+    gap: 1.5rem;
+}
+
+.partner-card {
+    background: #ffffff; /* БЕЛЫЙ ФОН КАРТОЧКИ */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    cursor: default;
+    transition: all 0.3s ease;
+    min-height: 160px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+}
+
+/* Настройка логотипа */
+.partner-logo img {
+    max-width: 180px;  /* Ограничиваем ширину */
+    max-height: 80px;  /* Ограничиваем высоту */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+/* Название компании (черным цветом, т.к. фон белый) */
+.partner-card h4 {
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Эффект при наведении */
+.partner-card:hover {
+    border-color: var(--color-primary); /* Оранжевая рамка */
+    box-shadow: 0 0 25px rgba(255, 102, 0, 0.6); /* Яркое свечение */
+    transform: translateY(-5px);
+    z-index: 2;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .partners-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .partners-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на телефоне */
+        gap: 10px;
+    }
+    .partner-card { padding: 1rem 0.5rem; min-height: 140px; }
+    .partner-logo img { max-width: 120px; max-height: 60px; }
+    .partner-card h4 { font-size: 0.8rem; }
+}
+/* --- УВЕЛИЧЕНИЕ ГЛАВНОЙ КНОПКИ НА ТЕЛЕФОНЕ --- */
+@media (max-width: 768px) {
+    .hero .btn {
+        padding: 15px 40px !important; /* Делаем кнопку "толще" и шире */
+        font-size: 1.1rem !important;  /* Увеличиваем размер текста */
+        width: 80%;                    /* (Опционально) Растягиваем почти на всю ширину */
+        max-width: 300px;              /* Но не шире 300px */
+        display: block;                /* Чтобы margin auto сработал */
+        margin: 0 auto;                /* Центрируем */
+    }
+}
