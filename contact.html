@@ -113,7 +113,95 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- ВАЖНО: type="module" позволяет использовать import -->
+    <script type="module">
+        // 1. Импортируем функции из Firebase (прямо с сервера Google)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // 2. ВАШИ НАСТРОЙКИ (То, что вы скинули)
+        const firebaseConfig = {
+            apiKey: "AIzaSyANLASwk1WNbrmjV2YsF8ZGlnIAEQudPUA",
+            authDomain: "akberen-site.firebaseapp.com",
+            projectId: "akberen-site",
+            storageBucket: "akberen-site.firebasestorage.app",
+            messagingSenderId: "794903039108",
+            appId: "1:794903039108:web:32d1d4aaf26d6117a606d1",
+            measurementId: "G-C7G8W4WZ7Y"
+        };
+
+        // 3. Инициализация
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 4. Настройки Telegram (НЕ ЗАБУДЬТЕ ВПИСАТЬ!)
+        const TELEGRAM_TOKEN = '8266962080:AAFV6JHSCmm993UjLVMdlnlBFDNwzz8tbww';
+        const TELEGRAM_CHAT_ID = '7346456383';
+
+        // 5. Функция отправки (теперь она внутри модуля)
+        async function sendMessage(event) {
+            if(event) event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const btn = document.querySelector('.btn-primary');
+
+            if(!name || !email || !message) {
+                alert("Пожалуйста, заполните все поля");
+                return;
+            }
+
+            btn.innerText = "Отправка...";
+            btn.disabled = true;
+
+            const dateNow = new Date();
+
+            // --- TELEGRAM ---
+            const textForTelegram = `🔥 <b>Новая заявка!</b>\n👤 ${name}\n📧 ${email}\n💬 ${message}`;
+            let telegramPromise = Promise.resolve();
+            if (TELEGRAM_TOKEN !== 'ВАШ_ТОКЕН_БОТА') {
+                const urlTelegram = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(textForTelegram)}&parse_mode=html`;
+                telegramPromise = fetch(urlTelegram);
+            }
+
+            // --- FIREBASE (Сохранение в базу) ---
+            try {
+                await addDoc(collection(db, "messages"), {
+                    name: name,
+                    email: email,
+                    message: message,
+                    date: dateNow
+                });
+
+                // Ждем отправку в телеграм (если настроен)
+                await telegramPromise;
+
+                alert("Ваше сообщение успешно отправлено!");
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('message').value = '';
+                btn.innerText = "Отправить";
+                btn.disabled = false;
+
+            } catch (e) {
+                console.error("Ошибка: ", e);
+                alert("Ошибка при отправке. Попробуйте позже.");
+                btn.innerText = "Отправить";
+                btn.disabled = false;
+            }
+        }
+
+        // Привязываем кнопку (так как type="module" изолирует код, нужно делать через addEventListener)
+        const formBtn = document.querySelector('.btn-primary');
+        if(formBtn) {
+            // Удаляем старый onclick из HTML, если он там был, и ставим новый
+            formBtn.onclick = null;
+            formBtn.addEventListener('click', sendMessage);
+        }
+    </script>
 </body>
 </html>
