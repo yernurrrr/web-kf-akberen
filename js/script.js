@@ -341,3 +341,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target === teamModal) closeTeamModal();
         });
     }
+// --- 6. КНОПКА НАВЕРХ (SCROLL TO TOP) ---
+    const scrollBtn = document.getElementById("scrollTopBtn");
+
+    if (scrollBtn) {
+        // Показываем кнопку, если прокрутили больше 300px
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.style.display = "flex"; // Показать (flex для центровки стрелки)
+            } else {
+                scrollBtn.style.display = "none"; // Скрыть
+            }
+        };
+
+        // Плавная прокрутка наверх при клике
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }

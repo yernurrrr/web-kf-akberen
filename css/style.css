@@ -749,3 +749,61 @@ main .section:first-child { padding-top: 2rem; }
         margin: 0 auto;                /* Центрируем */
     }
 }
+/* --- СТРАНИЦА 404 (ERROR PAGE) --- */
+.error-section {
+    min-height: 60vh; /* Чтобы футер не уезжал вверх */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-code {
+    font-size: 8rem; /* Очень большие цифры */
+    line-height: 1;
+    margin-bottom: 1rem;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-primary); /* Только оранжевый контур */
+    text-shadow: 0 0 30px var(--color-primary-glow); /* Неоновое свечение */
+    font-family: var(--font-heading);
+}
+
+.error-desc {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+}
+
+/* Адаптация для телефонов */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 5rem;
+    }
+}
+/* --- КНОПКА НАВЕРХ --- */
+#scrollTopBtn {
+    display: none; /* Скрыта, пока не прокрутили */
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 999; /* Поверх всего */
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: var(--color-primary); /* Оранжевый */
+    color: #fff;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); /* Свечение */
+    transition: all 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--color-secondary); /* Голубой при наведении */
+    transform: translateY(-5px); /* Подпрыгивает */
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.6);
+}
